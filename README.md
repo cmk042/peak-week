@@ -23,10 +23,10 @@ The first version supports one challenge with manually added participants, stand
 
 ## Tech Stack
 
-- React / Next.js
+- React Native / Expo
 - Supabase
-- Recharts
-- Vercel
+- TypeScript
+- EAS Build
 
 ## Data Model
 
