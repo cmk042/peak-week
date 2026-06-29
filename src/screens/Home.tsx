@@ -8,33 +8,30 @@ import BottomNav from "../components/BottomNav";
 
 export default function Home() {
   return (
-    <View style={styles.root}>
-      <ScrollView
-        style={styles.screen}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <Header challengeName="Summer Athletic Peak" />
+    <ScrollView
+      style={styles.screen}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      <Header challengeName="Summer Athletic Peak" />
 
-        <TimeCard
-          daysLeft={18}
-          currentDay={12}
-          totalDays={30}
-          endDateLabel="July 10, 2025"
-        />
+      <TimeCard
+        daysLeft={18}
+        currentDay={12}
+        totalDays={30}
+        endDateLabel="July 10, 2025"
+      />
 
-        <View style={styles.statsRow}>
-          <StatCard icon="♙" value={5} label="Friends" iconColor="#3B82F6" />
-          <StatCard icon="✓" value="4/6" label="Events" iconColor="#22C55E" />
-          <StatCard icon="♨" value={8} label="New PRs" iconColor="#F97316" />
-        </View>
+      <View style={styles.statsRow}>
+        <StatCard icon="♙" value={5} label="Friends" iconColor="#3B82F6" />
+        <StatCard icon="✓" value="4/6" label="Events" iconColor="#22C55E" />
+        <StatCard icon="♨" value={8} label="New PRs" iconColor="#F97316" />
+      </View>
 
-        <ImproversBoard improvers={mockImprovers} />
+      <ImproversBoard improvers={mockImprovers} />
 
-        <ActivityBoard activities={mockActivities} />
-      </ScrollView>
-      <BottomNav />
-    </View>
+      <ActivityBoard activities={mockActivities} />
+    </ScrollView>
   );
 }
 

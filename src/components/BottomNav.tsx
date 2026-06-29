@@ -1,43 +1,52 @@
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-type NavItem = {
-  label: string;
-  icon: string;
-  active?: boolean;
+const icons: Record<string, string> = {
+  Home: "⌂",
+  Stats: "▥",
+  Add: "+",
+  Profile: "♙",
+  Settings: "⚙",
 };
 
-const navItems: NavItem[] = [
-  { label: "Home", icon: "⌂", active: true },
-  { label: "Stats", icon: "▥" },
-  { label: "Add", icon: "+" },
-  { label: "Profile", icon: "♙" },
-  { label: "More", icon: "⚙" },
-];
-
-export default function BottomNav() {
+export default function BottomNav({ state, navigation }: BottomTabBarProps) {
   return (
     <View style={styles.wrapper}>
-      {navItems.map((item) => {
-        const isAdd = item.label === "Add";
+      {state.routes.map((route, index) => {
+        const isFocused = state.index === index;
+        const isAdd = route.name === "Add";
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
 
         return (
           <Pressable
-            key={item.label}
+            key={route.key}
+            onPress={onPress}
             style={[styles.item, isAdd && styles.addButton]}
           >
             <Text
               style={[
                 styles.icon,
-                item.active && styles.activeText,
+                isFocused && styles.activeText,
                 isAdd && styles.addIcon,
               ]}
             >
-              {item.icon}
+              {icons[route.name]}
             </Text>
 
             {!isAdd && (
-              <Text style={[styles.label, item.active && styles.activeText]}>
-                {item.label}
+              <Text style={[styles.label, isFocused && styles.activeText]}>
+                {route.name}
               </Text>
             )}
           </Pressable>
@@ -49,11 +58,7 @@ export default function BottomNav() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 86,
+    height: 88,
     backgroundColor: "#0B1220",
     borderTopWidth: 1,
     borderTopColor: "#1F2937",
@@ -61,6 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     paddingBottom: 18,
+    paddingHorizontal: 8,
   },
   item: {
     alignItems: "center",
@@ -86,11 +92,13 @@ const styles = StyleSheet.create({
     height: 72,
     borderRadius: 26,
     backgroundColor: "#3B82F6",
-    marginBottom: 28,
+    marginBottom: 30,
     shadowColor: "#3B82F6",
     shadowOpacity: 0.45,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 8 },
+    alignItems: "center",
+    justifyContent: "center",
   },
   addIcon: {
     color: "white",
