@@ -1,5 +1,19 @@
 import { View } from "react-native";
 
-export default function EventCard() {
+type EventCardProps = {
+  eventName: string;
+  icon: string;
+  leaderName: string;
+  topImproverName: string;
+  improvementPercent: number;
+};
+
+export default function EventCard({
+  eventName,
+  icon,
+  leaderName,
+  topImproverName,
+  improvementPercent,
+}: EventCardProps) {
   return <View></View>;
 }
