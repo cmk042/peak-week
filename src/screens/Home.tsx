@@ -4,7 +4,6 @@ import TimeCard from "../components/TimeCard";
 import StatCard from "../components/StatCard";
 import ImproversBoard from "../components/ImproversBoard";
 import ActivityBoard from "../components/ActivityBoard";
-import BottomNav from "../components/BottomNav";
 
 export default function Home() {
   return (

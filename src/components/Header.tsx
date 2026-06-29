@@ -51,12 +51,16 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   title: {
-    color: "white",
     fontSize: 28,
     fontWeight: "900",
     lineHeight: 32,
     letterSpacing: -1.8,
     maxWidth: 260,
+    color: "#FFFFFF",
+    shadowColor: "#ffffff",
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
   },
   imageButton: {
     width: 76,
