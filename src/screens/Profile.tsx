@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, View, Text } from "react-native";
+import LeaderboardCard from "../components/LeaderboardCard";
 
 export default function Profile() {
   return (

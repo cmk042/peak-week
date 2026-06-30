@@ -38,7 +38,7 @@ function getEventName(eventId: string) {
   return mockEvents.find((event) => event.id === eventId)?.name ?? "Event";
 }
 
-export default function Stats() {
+export default function Stats({ navigation }: any) {
   const [selectedEventId, setSelectedEventId] = useState("overall");
 
   const filteredImprovers = useMemo(() => {
@@ -70,7 +70,12 @@ export default function Stats() {
 
       <ImprovementBargraph title={graphTitle} rows={filteredImprovers} />
 
-      <EventCardGrid events={mockEventSummaries} />
+      <EventCardGrid
+        events={mockEventSummaries}
+        onPressEvent={(eventId) =>
+          navigation.navigate("EventDetail", { eventId })
+        }
+      />
     </ScrollView>
   );
 }

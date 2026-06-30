@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
 type EventCardProps = {
   eventName: string;
@@ -6,6 +6,7 @@ type EventCardProps = {
   leaderName: string;
   topImproverName: string;
   improvementPercent: number;
+  onPress: () => void;
 };
 
 export default function EventCard({
@@ -14,11 +15,18 @@ export default function EventCard({
   leaderName,
   topImproverName,
   improvementPercent,
+  onPress,
 }: EventCardProps) {
   return (
-    <View style={styles.card}>
-      <View style={styles.iconCircle}>
-        <Text style={styles.icon}>{icon}</Text>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+    >
+      <View style={styles.topRow}>
+        <View style={styles.iconCircle}>
+          <Text style={styles.icon}>{icon}</Text>
+        </View>
+        <Text style={styles.arrow}>→</Text>
       </View>
 
       <Text style={styles.eventName}>{eventName}</Text>
@@ -34,7 +42,7 @@ export default function EventCard({
       </View>
 
       <Text style={styles.improvement}>↑ {improvementPercent.toFixed(1)}%</Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -101,5 +109,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "900",
     marginTop: 4,
+  },
+  cardPressed: {
+    borderColor: "#3B82F6",
+    backgroundColor: "#172554",
+    transform: [{ scale: 0.98 }],
+  },
+  topRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  arrow: {
+    color: "#6B7280",
+    fontSize: 16,
+    fontWeight: "700",
   },
 });

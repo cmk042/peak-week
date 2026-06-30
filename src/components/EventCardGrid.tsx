@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import EventCard from "./EventCard";
 
-type EventCard = {
+type EventSummary = {
   eventId: string;
   eventName: string;
   icon: string;
@@ -11,10 +11,14 @@ type EventCard = {
 };
 
 type EventCardGridProps = {
-  events: EventCard[];
+  events: EventSummary[];
+  onPressEvent: (eventId: string) => void;
 };
 
-export default function EventCardGrid({ events }: EventCardGridProps) {
+export default function EventCardGrid({
+  events,
+  onPressEvent,
+}: EventCardGridProps) {
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>EVENT BREAKDOWN</Text>
@@ -28,6 +32,7 @@ export default function EventCardGrid({ events }: EventCardGridProps) {
             leaderName={event.leaderName}
             topImproverName={event.topImproverName}
             improvementPercent={event.improvement}
+            onPress={() => onPressEvent(event.eventId)}
           />
         ))}
       </View>
