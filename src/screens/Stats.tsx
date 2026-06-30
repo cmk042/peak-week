@@ -1,12 +1,59 @@
+import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
+
 import DashHeader from "../components/DashHeader";
-import ImprovementBargraph from "../components/ImprovementBargraph";
 import EventCardGrid from "../components/EventCardGrid";
 import EventFilterTabs from "../components/EventFilterTabs";
-import { useState } from "react";
+import ImprovementBargraph from "../components/ImprovementBargraph";
+
+type Event = {
+  id: string;
+  name: string;
+  shortName: string;
+  icon: string;
+  unit: string;
+  higherIsBetter: boolean;
+};
+
+type ImproverRow = {
+  participantId: string;
+  name: string;
+  initials: string;
+  improvement: number;
+  color: string;
+};
+
+type EventSummary = {
+  eventId: string;
+  eventName: string;
+  icon: string;
+  leaderName: string;
+  topImproverName: string;
+  improvement: number;
+};
+
+type ImproversByEvent = Record<string, ImproverRow[]>;
+
+function getEventName(eventId: string) {
+  return mockEvents.find((event) => event.id === eventId)?.name ?? "Event";
+}
 
 export default function Stats() {
   const [selectedEventId, setSelectedEventId] = useState("overall");
+
+  const filteredImprovers = useMemo(() => {
+    if (selectedEventId === "overall") {
+      return mockImprovers;
+    }
+
+    return mockImproversByEvent[selectedEventId] ?? [];
+  }, [selectedEventId]);
+
+  const graphTitle =
+    selectedEventId === "overall"
+      ? "% IMPROVEMENT — ALL EVENTS"
+      : `% IMPROVEMENT — ${getEventName(selectedEventId).toUpperCase()}`;
+
   return (
     <ScrollView
       style={styles.screen}
@@ -21,10 +68,7 @@ export default function Stats() {
         onSelectEvent={setSelectedEventId}
       />
 
-      <ImprovementBargraph
-        title="% IMPROVEMENT — ALL EVENTS"
-        rows={mockImprovers}
-      />
+      <ImprovementBargraph title={graphTitle} rows={filteredImprovers} />
 
       <EventCardGrid events={mockEventSummaries} />
     </ScrollView>
@@ -43,15 +87,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const mockParticipants = [
-  { id: "sarah", name: "Sarah", initials: "S", color: "#EC4899" },
-  { id: "maya", name: "Maya", initials: "M", color: "#A855F7" },
-  { id: "casey", name: "Casey", initials: "C", color: "#3B82F6" },
-  { id: "jacob", name: "Jacob", initials: "J", color: "#F97316" },
-  { id: "steve", name: "Steve", initials: "S", color: "#22C55E" },
-];
-
-const mockEvents = [
+const mockEvents: Event[] = [
   {
     id: "bench",
     name: "Bench Press",
@@ -102,7 +138,7 @@ const mockEvents = [
   },
 ];
 
-const mockImprovers = [
+const mockImprovers: ImproverRow[] = [
   {
     participantId: "sarah",
     name: "Sarah",
@@ -140,7 +176,7 @@ const mockImprovers = [
   },
 ];
 
-const mockEventSummaries = [
+const mockEventSummaries: EventSummary[] = [
   {
     eventId: "bench",
     eventName: "Bench Press",
@@ -190,3 +226,67 @@ const mockEventSummaries = [
     improvement: 22.1,
   },
 ];
+
+const mockImproversByEvent: ImproversByEvent = {
+  bench: [
+    {
+      participantId: "sarah",
+      name: "Sarah",
+      initials: "S",
+      improvement: 38.5,
+      color: "#EC4899",
+    },
+    {
+      participantId: "casey",
+      name: "Casey",
+      initials: "C",
+      improvement: 22.1,
+      color: "#3B82F6",
+    },
+  ],
+  squat: [
+    {
+      participantId: "sarah",
+      name: "Sarah",
+      initials: "S",
+      improvement: 30.4,
+      color: "#EC4899",
+    },
+  ],
+  vertical: [
+    {
+      participantId: "casey",
+      name: "Casey",
+      initials: "C",
+      improvement: 25.0,
+      color: "#3B82F6",
+    },
+  ],
+  dash100: [
+    {
+      participantId: "jacob",
+      name: "Jacob",
+      initials: "J",
+      improvement: 6.2,
+      color: "#F97316",
+    },
+  ],
+  mile: [
+    {
+      participantId: "maya",
+      name: "Maya",
+      initials: "M",
+      improvement: 12.8,
+      color: "#A855F7",
+    },
+  ],
+  pullups: [
+    {
+      participantId: "casey",
+      name: "Casey",
+      initials: "C",
+      improvement: 22.1,
+      color: "#3B82F6",
+    },
+  ],
+};

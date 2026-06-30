@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
 type ImprovementBargraphProps = {
   title: string;
@@ -44,17 +44,29 @@ export default function ImprovementBargraph({
             <View key={row.participantId} style={styles.row}>
               <Text style={styles.name}>{row.name}</Text>
 
-              <View style={styles.barTrack}>
-                <View
-                  style={[
-                    styles.bar,
-                    {
-                      width: `${widthPercent}%`,
-                      backgroundColor: row.color,
-                    },
-                  ]}
-                />
-              </View>
+              <Pressable style={styles.barTrack}>
+                {({ pressed }) => (
+                  <>
+                    {pressed && <View style={styles.pressedHighlight} />}
+
+                    <View
+                      style={[
+                        styles.bar,
+                        {
+                          width: `${widthPercent}%`,
+                          backgroundColor: row.color,
+                        },
+                      ]}
+                    />
+
+                    {pressed && (
+                      <Text style={styles.barText}>
+                        {row.improvement.toFixed(2)}% Improvement
+                      </Text>
+                    )}
+                  </>
+                )}
+              </Pressable>
             </View>
           );
         })}
@@ -124,10 +136,23 @@ const styles = StyleSheet.create({
     height: 22,
     justifyContent: "center",
     marginLeft: -BAR_SHIFT_LEFT,
+    position: "relative",
   },
+
+  pressedHighlight: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: -3,
+    bottom: -3,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 4,
+  },
+
   bar: {
     height: 22,
     borderRadius: 7,
+    justifyContent: "center",
   },
   axisRow: {
     marginLeft: NAME_WIDTH - BAR_SHIFT_LEFT,
@@ -147,5 +172,13 @@ const styles = StyleSheet.create({
     width: 70,
     marginLeft: -35,
     textAlign: "center",
+  },
+  barText: {
+    position: "absolute",
+    left: 6,
+    color: "#000000",
+    fontSize: 12,
+    fontWeight: "700",
+    zIndex: 2,
   },
 });
